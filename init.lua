@@ -45,7 +45,7 @@ vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 500
+vim.opt.timeoutlen = 1000
 
 -- Configure how new splits should be openedvim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -63,8 +63,9 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 2
 
+vim.opt.jumpoptions = "stack"
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -94,15 +95,18 @@ vim.keymap.set({ "n", "v", "i" }, "<C-up>", "<C-w><C-k>", { desc = "Move focus t
 vim.keymap.set({ "n", "v", "i" }, "<M-BS>", "<cmd>bprev<CR><Esc>", { desc = "Go to previous buffer" })
 vim.keymap.set({ "n", "v", "i" }, "<M-CR>", "<cmd>bnext<CR><Esc>", { desc = "Go to next buffer" })
 
--- vim.keymap.set('n', '<M-left>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<M-right>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<M-down>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<M-up>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set("n", "<M-left>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<M-right>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<M-down>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<M-up>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
--- vim.keymap.set('n', '<left>'  , '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>' , '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>'    , '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>'  , '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set("n", "<M-|>", "<C-w>v", { desc = "Split vertically" })
+vim.keymap.set("n", "<M-_>", "<C-w>s", { desc = "Split horizontal" })
+
+vim.keymap.set("n", "<M-;>", "<C-w>+", { desc = "Resize " })
+vim.keymap.set("n", "<M-'>", "<C-w>-", { desc = "Resize" })
+vim.keymap.set("n", "<M-,>", "<C-w><", { desc = "Resize " })
+vim.keymap.set("n", "<M-.>", "<C-w>>", { desc = "Resize" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -153,16 +157,14 @@ vim.api.nvim_create_autocmd({ "UIEnter" }, {
 	callback = function()
 		if vim.fn.has("gui_running") then
 			-- vim.cmd("call GuiClipboard()")
-			function toggleFullScreen()
+			function ToggleFullScreen()
 				if 1 == vim.g.GuiWindowFullScreen then
-					vim.print("Enable FullScreen")
 					vim.cmd("call GuiWindowFullScreen(0)")
 				else
-					vim.print("Disable FullScreen")
 					vim.cmd("call GuiWindowFullScreen(1)")
 				end
 			end
-			vim.keymap.set({ "n", "v", "i", "x", "c", "o" }, "<F12>", toggleFullScreen, { desc = "Toggle fullscreen" })
+			vim.keymap.set({ "n", "v", "i", "x", "c", "o" }, "<F12>", ToggleFullScreen, { desc = "Toggle fullscreen" })
 		end
 	end,
 })
