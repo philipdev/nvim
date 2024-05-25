@@ -66,6 +66,12 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 2
 
 vim.opt.jumpoptions = "stack"
+
+vim.opt.autoindent = true
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
