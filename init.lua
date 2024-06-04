@@ -53,7 +53,7 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
+vim.opt.list = false
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
@@ -71,7 +71,6 @@ vim.opt.autoindent = true
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -98,6 +97,8 @@ vim.keymap.set({ "n", "v", "i" }, "<C-right>", "<C-w><C-l>", { desc = "Move focu
 vim.keymap.set({ "n", "v", "i" }, "<C-down>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set({ "n", "v", "i" }, "<C-up>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+vim.keymap.set({ "n" }, "<BS>", "<cmd>bprev<CR><Esc>", { desc = "Go to previous buffer" })
+vim.keymap.set({ "n" }, "<CR>", "<cmd>bnext<CR><Esc>", { desc = "Go to next buffer" })
 vim.keymap.set({ "n", "v", "i" }, "<M-BS>", "<cmd>bprev<CR><Esc>", { desc = "Go to previous buffer" })
 vim.keymap.set({ "n", "v", "i" }, "<M-CR>", "<cmd>bnext<CR><Esc>", { desc = "Go to next buffer" })
 
@@ -113,13 +114,21 @@ vim.keymap.set("n", "<M-;>", "<C-w>+", { desc = "Resize " })
 vim.keymap.set("n", "<M-'>", "<C-w>-", { desc = "Resize" })
 vim.keymap.set("n", "<M-,>", "<C-w><", { desc = "Resize " })
 vim.keymap.set("n", "<M-.>", "<C-w>>", { desc = "Resize" })
+vim.keymap.set({ "n", "v" }, "<C-z>", "<C-u>zz")
+vim.keymap.set({ "n", "v" }, "<C-x>", "<C-d>zz")
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
+--vim.keymap.del("n", "<C-q>")
+vim.keymap.set("n", "<C-n>", "<cmd>cnext<CR>")
+vim.keymap.set("n", "<C-p>", "<cmd>cprev<CR>")
+vim.keymap.set("n", "<C-q>", "<cmd>copen<CR>")
+vim.keymap.set("n", "<C-Q>", "<cmd>cclose<CR>")
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
+vim.keymap.set("n", "<leader>nc", function()
+	local dir = vim.fn.stdpath("config")
+	vim.api.nvim_set_current_dir(dir)
+	print("cd " .. dir)
+end, { desc = "Change Directory to nvim config" })
+
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
